@@ -13,10 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class WeatherClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherClient.class);
-    // private final String URL_WEATHER =
-    // "http://api.openweathermap.org/data/2.5/weather?q=Gothenburg&APPID=95852c5d692034ab82e49904bc20fa86";
-    // private final String URL_WEATHER =
-    // "http://api.openweathermap.org/data/2.5/forecast?q=Gothenburg&APPID=95852c5d692034ab82e49904bc20fa86";
+
     private final String URL_WEATHER = "";
 
     public WeatherClient() {
