@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TrafficClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherClient.class);
-    private String URL_TARFFIC = "https://traffic.cit.api.here.com/traffic/6.2/flow.json?app_id=FGariHtsUJwg53I3Cj3o&app_code=s2S6hp1Y42Xv3iGN9sZYjw&prox=57.6891394,11.9875979,10";
+    private String URL_TARFFIC = "";
 
     public TrafficClient() {
     }

@@ -17,7 +17,7 @@ public class WeatherClient {
     // "http://api.openweathermap.org/data/2.5/weather?q=Gothenburg&APPID=95852c5d692034ab82e49904bc20fa86";
     // private final String URL_WEATHER =
     // "http://api.openweathermap.org/data/2.5/forecast?q=Gothenburg&APPID=95852c5d692034ab82e49904bc20fa86";
-    private final String URL_WEATHER = "http://api.openweathermap.org/data/2.5/weather?lat=57,773106&lon=12,768874&APPID=95852c5d692034ab82e49904bc20fa86";
+    private final String URL_WEATHER = "";
 
     public WeatherClient() {
     }
