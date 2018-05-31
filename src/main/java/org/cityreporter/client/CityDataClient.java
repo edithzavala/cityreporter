@@ -2,7 +2,10 @@ package org.cityreporter.client;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +42,10 @@ public class CityDataClient {
 		monData.setMonitors(new ArrayList<>());
 		// Add monitors with their variables measures to the list of monitors
 		monData.getMonitors().add(wc.getWeatherData()); // weather monitor (freq= 60000 ms)
+		// Add context variables
+		Map.Entry<String, Object> contextVar = new AbstractMap.SimpleEntry<String, Object>("services",
+			Arrays.asList("laneFollower"));
+		monData.setContext(Arrays.asList(contextVar));
 		postData(monData);
 	    }
 	};
@@ -54,6 +61,10 @@ public class CityDataClient {
 		monData.setMonitors(new ArrayList<>());
 		// Add monitors with their variables measures to the list of monitors
 		monData.getMonitors().add(tc.getTrafficData());// traffic monitor (freq= 1000 ms)
+		// Add context variables
+		Map.Entry<String, Object> contextVar = new AbstractMap.SimpleEntry<String, Object>("services",
+			Arrays.asList("laneFollower"));
+		monData.setContext(Arrays.asList(contextVar));
 		postData(monData);
 	    }
 	};
