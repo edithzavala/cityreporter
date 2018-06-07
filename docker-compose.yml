@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+ # microservice city data monitor
+    cityreporter:
+        image: cityreporter
+        network_mode: host
