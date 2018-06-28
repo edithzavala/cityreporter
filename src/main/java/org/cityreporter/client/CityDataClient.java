@@ -49,9 +49,9 @@ public class CityDataClient {
 		postData(monData);
 	    }
 	};
-	schedulerW.scheduleAtFixedRate(taskW, 0, 60000, TimeUnit.MILLISECONDS);
+	schedulerW.scheduleAtFixedRate(taskW, 5000, 60000, TimeUnit.MILLISECONDS);
 	/*************************************/
-	/** Monitor traffic every 60000 ms **/
+	/** Monitor traffic every 1000 ms **/
 	Runnable taskT = new Runnable() {
 	    @Override
 	    public void run() {
@@ -68,7 +68,7 @@ public class CityDataClient {
 		postData(monData);
 	    }
 	};
-	schedulerW.scheduleAtFixedRate(taskT, 0, 1000, TimeUnit.MILLISECONDS);
+	schedulerT.scheduleAtFixedRate(taskT, 5000, 1000, TimeUnit.MILLISECONDS);
 	/*************************************/
     }
 

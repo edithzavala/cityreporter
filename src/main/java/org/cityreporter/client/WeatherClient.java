@@ -1,7 +1,12 @@
 package org.cityreporter.client;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import org.cityreporter.model.ksampost.Measure;
 import org.cityreporter.model.ksampost.Measurement;
@@ -14,15 +19,31 @@ import org.springframework.web.client.RestTemplate;
 public class WeatherClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherClient.class);
 
-    private final String URL_WEATHER = "";
+    private final String URL_WEATHER = "http://api.openweathermap.org/data/2.5/weather?lat=57,773106&lon=12,768874&APPID=95852c5d692034ab82e49904bc20fa86";
+
+    private boolean replay = true;
+    private Iterator<String> linesW;
 
     public WeatherClient() {
+	if (replay) {
+	    try {
+		linesW = Files.lines(Paths.get("/tmp/weka/openweathermap-mainWeather_replay.txt"))
+			.collect(Collectors.toList()).iterator();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
     }
 
     public RuntimeMonitorData getWeatherData() {
-	RestTemplate restTemplate = new RestTemplate();
-	WeatherResponse response = restTemplate.getForObject(URL_WEATHER, WeatherResponse.class);
-
+	String weather = "";
+	if (replay) {
+	    weather = linesW.hasNext() ? linesW.next().split(" ")[1] : "Rain";
+	} else {
+	    RestTemplate restTemplate = new RestTemplate();
+	    WeatherResponse response = restTemplate.getForObject(URL_WEATHER, WeatherResponse.class);
+	    weather = response.getWeather().get(0).getMain();
+	}
 	/** Temperature **/
 	// Measure m_temp = new Measure();
 	// m_temp.setmTimeStamp(monData.getTimeStamp());
@@ -38,7 +59,7 @@ public class WeatherClient {
 	// Create a measure with TS and Value
 	Measure m_state = new Measure();
 	m_state.setmTimeStamp(new Timestamp(System.currentTimeMillis()).getTime());
-	m_state.setValue(response.getWeather().get(0).getMain());
+	m_state.setValue(weather);
 	// Add measure to corresponding measurement i.e., monitoring variable
 	Measurement mrmt = new Measurement();
 	mrmt.setVarId("mainWeather");
