@@ -37,6 +37,7 @@ public class TrafficClient {
 
     public void adaptMontitorParameter(String parameter, String value) {
 	this.path = Integer.valueOf(value); // example of para meter adaptation
+	LOGGER.info("Heretraffic location parameter changed");
     }
 
     public RuntimeMonitorData getTrafficData() {

@@ -3,7 +3,7 @@ version: '2'
 services:
  # microservice city data monitor
     cityreporter:
-        image: cityreporter
+        image: edithzavala/cityreporter
         network_mode: host
         ports:
             - "8089:8080"
