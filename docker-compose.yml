@@ -5,5 +5,7 @@ services:
     cityreporter:
         image: cityreporter
         network_mode: host
-        volumes:
-        - /weka_ksam/:/tmp/weka
+        ports:
+            - "8089:8080"
+        #volumes:
+        #- /weka_ksam/:/tmp/weka

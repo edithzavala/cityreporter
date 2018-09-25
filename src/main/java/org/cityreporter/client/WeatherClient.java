@@ -20,9 +20,10 @@ public class WeatherClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(WeatherClient.class);
 
     private final String URL_WEATHER = "http://api.openweathermap.org/data/2.5/weather?lat=57,773106&lon=12,768874&APPID=95852c5d692034ab82e49904bc20fa86";
+    private final boolean replay = false;
 
-    private boolean replay = true;
     private Iterator<String> linesW;
+    private String city; // Could be an adaptive parameters for getting weather
 
     public WeatherClient() {
 	if (replay) {
@@ -33,6 +34,11 @@ public class WeatherClient {
 		e.printStackTrace();
 	    }
 	}
+	this.city = "Gothenburg";
+    }
+
+    public void adaptMontitorParameter(String parameter, String value) {
+	this.city = value; // example of para meter adaptation
     }
 
     public RuntimeMonitorData getWeatherData() {
