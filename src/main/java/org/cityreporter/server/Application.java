@@ -10,7 +10,7 @@ public class Application {
 
     public static void main(String[] args) {
 	SpringApplication.run(Application.class, args);
-	cityDataClient = new CityDataClient();
+	cityDataClient = new CityDataClient(args[0]);
     }
 
 }
