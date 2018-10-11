@@ -33,10 +33,14 @@ public class TrafficClient {
     private final int instances;
     private String routeNo;
 
+    private final int minSymptoms = 5; // config variable
+    private int currentSymptoms;
+
     public TrafficClient(String url, boolean replay, boolean simulation) {
 	this.isReplay = replay;
 	this.isSimulation = simulation;
 	this.URL_TARFFIC = url;
+	this.currentSymptoms = 0;
 	if (isReplay) {
 	    try {
 		linesT = Files.lines(Paths.get("/tmp/weka/heretraffic-trafficFactor_replay.txt"))
@@ -77,13 +81,14 @@ public class TrafficClient {
 	    if (isSimulation) {
 		switch (this.routeNo) {
 		case "1":
-		    trafficF = "6.0";// PATH 1 (L)
+		    trafficF = "3.0";// PATH 1 (L)
 		    break;
 		case "2":
-		    trafficF = "2.0";// PATH 2 (S)
+		    trafficF = "4.0";// PATH 2 (S)
 		    break;
 		case "3":
-		    trafficF = "6.0";// PATH 3 (d)
+		    trafficF = currentSymptoms < minSymptoms ? "6.0" : "4.0";// PATH 3 (d)
+		    currentSymptoms++;
 		    break;
 		default:
 		    break;

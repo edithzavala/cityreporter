@@ -63,7 +63,7 @@ public class WeatherClient {
 	// mrmt_temp.setMeasures(Arrays.asList(m_temp));
 	/***************/
 
-	/** Main weather ["Rain","Snow","Extreme","Clear","Clouds"] **/
+	/** Main weather ["Rain","Snow","Extreme","Clear","Clouds","Foggy"] **/
 	// Create a measure with TS and Value
 	Measure m_state = new Measure();
 	m_state.setmTimeStamp(new Timestamp(System.currentTimeMillis()).getTime());

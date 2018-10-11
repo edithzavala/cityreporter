@@ -4,4 +4,5 @@
 /config/
 .project
 .classpath
+.settings
 /other/

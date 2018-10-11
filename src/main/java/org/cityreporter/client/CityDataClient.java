@@ -164,7 +164,7 @@ public class CityDataClient {
 		futureTask.cancel(true);
 	    }
 
-	    futureTask = scheduledExecutorService.scheduleAtFixedRate(task, 0, time, TimeUnit.SECONDS);
+	    futureTask = scheduledExecutorService.scheduleAtFixedRate(task, 0, time, TimeUnit.MILLISECONDS);
 	}
     }
 
@@ -173,21 +173,60 @@ public class CityDataClient {
 	try {
 	    MonitorAdaptation adapt = mapper.readValue(adaptation, MonitorAdaptation.class);
 	    adapt.getMonitorsToAdd().forEach(m -> {
-		monitorsState.put(m, true);
-		LOGGER.info("Add monitor: " + m);
+		if (monitorsState.keySet().contains(m)) {
+		    monitorsState.put(m, true);
+		    LOGGER.info("Add monitor: " + m);
+		    if (m.equals("heretraffic")) {
+			/** This block should go in a method for avoiding code duplication */
+			MonitoringData monData = new MonitoringData();
+			monData.setSystemId(SYSTEM_ID);
+			monData.setTimeStamp(new Timestamp(System.currentTimeMillis()).getTime());
+			monData.setMonitors(new ArrayList<>());
+			// Add monitors with their variables measures to the list of monitors
+			monData.getMonitors().add(tc.getTrafficData());// traffic monitor (freq= 1000 ms)
+			// Add context variables
+			Map.Entry<String, Object> contextVar = new AbstractMap.SimpleEntry<String, Object>("services",
+				Arrays.asList(""));
+			// Arrays.asList("laneFollower"));
+			monData.setContext(Arrays.asList(contextVar));
+			// LOGGER.info(monData.toString());
+			postData(monData);
+			postTrafficDataToLaneFollower(monData);
+		    } else {
+			/** This block should go in a method for avoiding code duplication */
+			MonitoringData monData = new MonitoringData();
+			monData.setSystemId(SYSTEM_ID);
+			monData.setTimeStamp(new Timestamp(System.currentTimeMillis()).getTime());
+			monData.setMonitors(new ArrayList<>());
+			// Add monitors with their variables measures to the list of monitors
+			monData.getMonitors().add(wc.getWeatherData()); // weather monitor (freq= 60000 ms)
+			// Add context variables
+			Map.Entry<String, Object> contextVar = new AbstractMap.SimpleEntry<String, Object>("services",
+				Arrays.asList(""));
+			// Arrays.asList("laneFollower"));
+			monData.setContext(Arrays.asList(contextVar));
+			// LOGGER.info(monData.toString());
+			postData(monData);
+		    }
+		}
 
 	    });
 	    adapt.getMonitorsToRemove().forEach(m -> {
-		LOGGER.info("Remove monitor: " + m);
-		monitorsState.put(m, false);
+		if (monitorsState.keySet().contains(m)) {
+		    monitorsState.put(m, false);
+		    LOGGER.info("Remove monitor: " + m);
+		    tc.adaptMontitorParameter("Route", "2");
+		}
 	    });
 	    adapt.getParamsToAdapt().keySet().forEach(p -> {
 		if (p.equals("traffic-route")) {
 		    LOGGER.info("Heretraffic change location parameter");
 		    tc.adaptMontitorParameter("Route", "2");
 		} else if (p.equals("traffic-frequency")) {
+		    LOGGER.info("Heretraffic change frequency parameter");
 		    this.changeReadInterval(futureTaskT, schedulerT, taskT,
 			    Long.valueOf(adapt.getParamsToAdapt().get(p)));
+		    tc.adaptMontitorParameter("Route", "3");
 		}
 	    });
 	} catch (IOException e) {
